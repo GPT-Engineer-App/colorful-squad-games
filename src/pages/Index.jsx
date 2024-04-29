@@ -87,13 +87,25 @@ const GridGame = () => {
 
   const handleInputChange = (index, value) => {
     const newData = [...gridData];
-    newData[index] = value;
-    setGridData(newData);
+    const existingValues = new Set(newData);
+    if (!existingValues.has(value) || value.length > 1) {
+      newData[index] = value;
+      setGridData(newData);
+    }
   };
 
   const startGame = () => {
     if (gridData.every((value) => value !== "")) {
       setGameStarted(true);
+      const interval = setInterval(() => {
+        const randomIndex = Math.floor(Math.random() * gridData.length);
+        const newGridData = gridData.map((value, idx) => (idx === randomIndex ? "red" : value));
+        setGridData(newGridData);
+        if (gridData.filter((value) => typeof value === "string").length <= 1) {
+          clearInterval(interval);
+          alert("Game Over. Winner is the last remaining square!");
+        }
+      }, 1000);
     }
   };
 

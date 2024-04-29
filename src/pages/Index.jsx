@@ -97,13 +97,20 @@ const GridGame = () => {
   const startGame = () => {
     if (gridData.every((value) => value !== "")) {
       setGameStarted(true);
+      let currentPlayers = gridData.length;
+      const rounds = 4;
       const interval = setInterval(() => {
-        const randomIndex = Math.floor(Math.random() * gridData.length);
-        const newGridData = gridData.map((value, idx) => (idx === randomIndex ? "red" : value));
+        const playersToRemove = Math.ceil(currentPlayers / (rounds - (rounds - (currentPlayers % rounds))));
+        const newGridData = [...gridData];
+        for (let i = 0; i < playersToRemove; i++) {
+          const randomIndex = Math.floor(Math.random() * newGridData.length);
+          newGridData.splice(randomIndex, 1);
+        }
         setGridData(newGridData);
-        if (gridData.filter((value) => typeof value === "string").length <= 1) {
+        currentPlayers -= playersToRemove;
+        if (currentPlayers === 1) {
           clearInterval(interval);
-          alert("Game Over. Winner is the last remaining square!");
+          alert("Game Over. Winner is the last remaining player!");
         }
       }, 1000);
     }
@@ -112,11 +119,15 @@ const GridGame = () => {
   return (
     <VStack>
       <Input placeholder="Enter number of players" onChange={handlePlayerCountChange} type="number" />
-      <SimpleGrid columns={Math.sqrt(playerCount)} spacing={2}>
-        {gridData.map((value, index) => (
-          <Input key={index} value={value} onChange={(e) => handleInputChange(index, e.target.value)} placeholder="Enter a letter" />
-        ))}
-      </SimpleGrid>
+      <Box border="2px" borderColor="white" p={4}>
+        <SimpleGrid columns={Math.sqrt(playerCount)} spacing={2}>
+          {gridData.map((value, index) => (
+            <Box border="1px" borderColor="gray.200" p={2}>
+              <Input key={index} value={value} onChange={(e) => handleInputChange(index, e.target.value)} placeholder="Enter a letter" />
+            </Box>
+          ))}
+        </SimpleGrid>
+      </Box>
       <Button onClick={startGame} mt={4} colorScheme="blue">
         Start Game
       </Button>

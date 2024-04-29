@@ -41,7 +41,7 @@ const Index = () => {
   const GameArea = () => {
     switch (gameMode) {
       case "Grid Game":
-        return <Text>Grid Game Component</Text>;
+        return <GridGame />;
       case "Red or Blue":
         return <Text>Red or Blue Game Component</Text>;
       case "Team vs Team":
@@ -72,6 +72,43 @@ const Index = () => {
         )}
       </VStack>
     </Container>
+  );
+};
+
+const GridGame = () => {
+  const [playerCount, setPlayerCount] = useState(0);
+  const [gridData, setGridData] = useState([]);
+  const [gameStarted, setGameStarted] = useState(false);
+
+  const handlePlayerCountChange = (event) => {
+    setPlayerCount(Number(event.target.value));
+    setGridData(Array(Number(event.target.value)).fill(""));
+  };
+
+  const handleInputChange = (index, value) => {
+    const newData = [...gridData];
+    newData[index] = value;
+    setGridData(newData);
+  };
+
+  const startGame = () => {
+    if (gridData.every((value) => value !== "")) {
+      setGameStarted(true);
+    }
+  };
+
+  return (
+    <VStack>
+      <Input placeholder="Enter number of players" onChange={handlePlayerCountChange} type="number" />
+      <SimpleGrid columns={Math.sqrt(playerCount)} spacing={2}>
+        {gridData.map((value, index) => (
+          <Input key={index} value={value} onChange={(e) => handleInputChange(index, e.target.value)} placeholder="Enter a letter" />
+        ))}
+      </SimpleGrid>
+      <Button onClick={startGame} mt={4} colorScheme="blue">
+        Start Game
+      </Button>
+    </VStack>
   );
 };
 

@@ -32,7 +32,7 @@ const Index = () => {
       <Button leftIcon={<FaPlay />} colorScheme="purple" onClick={() => handleGameSelection("Team vs Team")}>
         Play Team vs Team
       </Button>
-      <Button leftIcon={<FaLock />} colorScheme="green" onClick={() => handleGameSelection("Vault Game")}>
+      <Button leftIcon={<FaPlay />} colorScheme="green" onClick={() => handleGameSelection("Vault Game")}>
         Play Vault Game
       </Button>
     </VStack>
@@ -47,7 +47,7 @@ const Index = () => {
       case "Team vs Team":
         return <Text>Team vs Team Game Component</Text>;
       case "Vault Game":
-        return <VaultGame />;
+        return <Text>Vault Game Component</Text>;
       default:
         return <GameSelection />;
     }
@@ -131,38 +131,6 @@ const GridGame = () => {
       <Button onClick={startGame} mt={4} colorScheme="blue">
         Start Game
       </Button>
-    </VStack>
-  );
-};
-
-const VaultGame = () => {
-  const [digits, setDigits] = useState([]);
-  const [actualNumber, setActualNumber] = useState("1178");
-  const [triesLeft, setTriesLeft] = useState(actualNumber.length - 1);
-  const [vaultOpen, setVaultOpen] = useState(false);
-  const [fact, setFact] = useState("The longest street in the world is Yonge street in Toronto Canada measuring 1,178 miles");
-
-  const handleDigitInput = (index, value) => {
-    const newDigits = [...digits];
-    newDigits[index] = value;
-    setDigits(newDigits);
-
-    if (newDigits.join("") === actualNumber) {
-      setVaultOpen(true);
-    } else {
-      setTriesLeft(triesLeft - 1);
-    }
-  };
-
-  return (
-    <VStack>
-      {digits.map((digit, index) => (
-        <Input key={index} value={digit} isReadOnly={digit === actualNumber[index]} onChange={(e) => handleDigitInput(index, e.target.value)} type="number" bg={digit === actualNumber[index] ? "green.200" : "transparent"} />
-      ))}
-      <Button onClick={() => setDigits(Array(actualNumber.length).fill(""))} colorScheme="red">
-        Reset
-      </Button>
-      {vaultOpen && <Text>{fact}</Text>}
     </VStack>
   );
 };

@@ -54,9 +54,11 @@ const Index = () => {
   };
 
   return (
-    <Container maxW="container.xl" py={10}>
-      <VStack spacing={8}>
-        <Heading>Welcome to the Game Center</Heading>
+    <Container maxW="container.xl" py={10} bg="linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 100%), linear-gradient(45deg, rgba(255,0,0,0.6), rgba(0,255,0,0.6))" bgBlendMode="multiply" minHeight="100vh">
+      <VStack spacing={8} align="center" justify="center" height="100vh">
+        <Heading size="4xl" mb={20}>
+          VOTAR
+        </Heading>
 
         {gameMode ? (
           <Flex direction="column" align="center">
